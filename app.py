@@ -1,50 +1,4 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
-# (Other imports same)
-
-@app.route('/', methods=['GET', 'POST'])
-def index():
-    if request.method == 'POST':
-        file = request.files.get('resume')
-        job_role = request.form.get('job_role')
-        job_description = request.form.get('job_description')
-
-        if not file or not job_role or not job_description:
-            flash('Please fill in all fields and upload a file.', 'error')
-            return redirect(url_for('index'))
-        
-        filename = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
-        file.save(filename)
-
-        # Extract text based on file type
-        if file.filename.endswith('.pdf'):
-            with open(filename, 'rb') as f:
-                resume_text = extract_text_from_pdf(f)
-        elif file.filename.endswith('.docx'):
-            resume_text = extract_text_from_docx(filename)
-        else:
-            flash('Unsupported file type. Please upload PDF or DOCX.', 'error')
-            return redirect(url_for('index'))
-
-        prompt = get_default_prompt(job_role, job_description, resume_text)
-        result = get_customized_resume_json(prompt)
-
-        if not result['success']:
-            flash('Error generating customized resume.', 'error')
-            return redirect(url_for('index'))
-
-        RESUME_DATA['resume'] = result['data']
-        flash('Resume customized successfully!', 'success')
-        return redirect(url_for('view_resume'))
-
-    return render_template('index.html')
-
-@app.route('/view')
-def view_resume():
-    resume = RESUME_DATA.get('resume')
-    if not resume:
-        return redirect(url_for('index'))
-    return render_template('view_resume.html', resume=resume)
-
 import streamlit as st
 import groq
 import tempfile
@@ -702,3 +656,48 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    if request.method == 'POST':
+        file = request.files.get('resume')
+        job_role = request.form.get('job_role')
+        job_description = request.form.get('job_description')
+
+        if not file or not job_role or not job_description:
+            flash('Please fill in all fields and upload a file.', 'error')
+            return redirect(url_for('index'))
+        
+        filename = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+        file.save(filename)
+
+        # Extract text based on file type
+        if file.filename.endswith('.pdf'):
+            with open(filename, 'rb') as f:
+                resume_text = extract_text_from_pdf(f)
+        elif file.filename.endswith('.docx'):
+            resume_text = extract_text_from_docx(filename)
+        else:
+            flash('Unsupported file type. Please upload PDF or DOCX.', 'error')
+            return redirect(url_for('index'))
+
+        prompt = get_default_prompt(job_role, job_description, resume_text)
+        result = get_customized_resume_json(prompt)
+
+        if not result['success']:
+            flash('Error generating customized resume.', 'error')
+            return redirect(url_for('index'))
+
+        RESUME_DATA['resume'] = result['data']
+        flash('Resume customized successfully!', 'success')
+        return redirect(url_for('view_resume'))
+
+    return render_template('index.html')
+
+@app.route('/view')
+def view_resume():
+    resume = RESUME_DATA.get('resume')
+    if not resume:
+        return redirect(url_for('index'))
+    return render_template('view_resume.html', resume=resume)
