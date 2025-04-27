@@ -1,0 +1,6 @@
+flask
+groq
+python-dotenv
+fpdf
+PyPDF2
+docx2txt
