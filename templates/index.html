@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Resume Tailor</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen flex items-center justify-center p-6">
+
+  <div class="w-full max-w-lg bg-gray-800 rounded-2xl shadow-lg p-8 space-y-6">
+    <h1 class="text-3xl font-bold text-center mb-4">🎯 Tailor Your Resume</h1>
+
+    <form action="/" method="POST" enctype="multipart/form-data" class="space-y-4">
+      <div>
+        <label class="block mb-2 text-sm">Job Role</label>
+        <input name="job_role" type="text" required class="w-full p-3 rounded bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+      </div>
+
+      <div>
+        <label class="block mb-2 text-sm">Job Description</label>
+        <textarea name="job_description" rows="4" required class="w-full p-3 rounded bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-400"></textarea>
+      </div>
+
+      <div>
+        <label class="block mb-2 text-sm">Upload Resume (PDF/DOCX)</label>
+        <input name="resume" type="file" accept=".pdf,.docx" required class="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-indigo-600 hover:file:bg-indigo-700">
+      </div>
+
+      <button type="submit" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 rounded-lg font-bold text-white">
+        Customize Resume
+      </button>
+    </form>
+  </div>
+
+</body>
+</html>
